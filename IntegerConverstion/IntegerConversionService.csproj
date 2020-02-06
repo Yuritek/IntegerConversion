@@ -42,17 +42,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\DegreesThousand.cs" />
-    <Compile Include="LogicArray\Hunds.cs" />
-    <Compile Include="LogicArray\Thousand.cs" />
+    <Compile Include="ClassNumbers\Hunds.cs" />
+    <Compile Include="ClassNumbers\Thousands.cs" />
     <Compile Include="Enums\BitDepth.cs" />
     <Compile Include="Enums\Kind.cs" />
     <Compile Include="Enums\SubjectiveCase.cs" />
-    <Compile Include="LogicArray\Frac20.cs" />
+    <Compile Include="ClassNumbers\Frac20.cs" />
     <Compile Include="Extension\StringExtension.cs" />
     <Compile Include="IntegerConverstion.cs" />
     <Compile Include="Model\QuantitativeNumber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LogicArray\Tens.cs" />
+    <Compile Include="ClassNumbers\Tens.cs" />
+    <Compile Include="Service\FormationThousands.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

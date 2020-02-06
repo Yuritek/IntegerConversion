@@ -7,9 +7,19 @@
 			return string.Concat(value, " ");
 		}
 
-		public static string AddSymbolWidthSpace(this string value, string symbol)
+		public static string AddSymbol(this string value, string symbol)
 		{
-			return string.Concat(value, symbol, " ");
+			return string.Concat(value.Trim(), symbol.Trim());
 		}
-	}
+
+		public static string ReplaceSymbol(this string value, string symbol)
+		{
+			return value.Substring(0,value.Length-1)+symbol;
+		}
+
+		public static string DeleteLastSymbol(this string value)
+		{
+			return value.Substring(0, value.Length - 1);
+		}
+    }
 }

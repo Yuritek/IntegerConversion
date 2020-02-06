@@ -5,18 +5,18 @@ using IntegerConverstionService.Enums;
 using IntegerConverstionService.Extension;
 using IntegerConverstionService.Model;
 
-namespace IntegerConverstionService.LogicArray
+namespace IntegerConverstionService.ClassNumbers
 {
     public static class Frac20
     {
-	    private static readonly string[] frac20 =
+	    private static readonly string[] frac20Base =
 	    {
 		    "", "один", "два", "три", "четыре", "пять", "шесть",
 		    "семь", "восемь", "девять", "десять", "одиннадцать",
 		    "двенадцать", "тринадцать", "четырнадцать", "пятнадцать",
 		    "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"
 	    };
-	   private static readonly List<QuantitativeNumber> SpecialCaseFor14 =
+	   private static readonly List<QuantitativeNumber> SpecialCaseFor1_4 =
 		  new List<QuantitativeNumber>
 		  {
 			    new QuantitativeNumber {Kind = Kind.Masculine, SubjCase=SubjectiveCase.Nominative,StrValue = "один", Index = 1},
@@ -84,12 +84,16 @@ namespace IntegerConverstionService.LogicArray
 			  new QuantitativeNumber {Kind = Kind.None, SubjCase=SubjectiveCase.Prepositional,StrValue = "четырех", Index = 4 },
 		  };
 
-	    private static readonly string[] Frac20Base =
-	    {
-		    "", "", "", "", "", "пяти", "шести", "семи", "восьми", "девяти", "десяти", "одиннадцати", "двенадцати",
-		    "тринадцати",
-		    "четырнадцати", "пятнадцати", "шестанадцати", "семнадцати", "восемнадцати", "девятнадцати"
-	    };
+	    public static readonly Dictionary<SubjectiveCase, Func<string, string>> Frac5_19 =
+		    new Dictionary<SubjectiveCase, Func<string, string>>
+		    {
+			    {SubjectiveCase.Nominative, s => s},
+			    {SubjectiveCase.Genitive, s => s.ReplaceSymbol("и")},
+			    {SubjectiveCase.Dative, s => s.ReplaceSymbol("и")},
+			    {SubjectiveCase.Accusative, s => s},
+			    {SubjectiveCase.Instrumental, s => s.AddSymbol("ю")},
+			    {SubjectiveCase.Prepositional, s => s.ReplaceSymbol("и")}
+		    };
 
 	    public static string GetQuantitativeNumber(int number, Func<int, int> funct,
 		    SubjectiveCase subjectiveCase = SubjectiveCase.Nominative, Kind kind = Kind.Masculine)
@@ -97,27 +101,17 @@ namespace IntegerConverstionService.LogicArray
 		    var index = funct(number);
 		    if (index >= 5 && index < 19)
 		    {
-			    if (subjectiveCase == SubjectiveCase.Genitive || subjectiveCase == SubjectiveCase.Dative ||
-			        subjectiveCase == SubjectiveCase.Prepositional)
-			    {
-				    return Frac20Base[index].AddSpace();
-			    }
-
-			    if (subjectiveCase == SubjectiveCase.Instrumental)
-				    return frac20[index].AddSymbolWidthSpace("ю");
+			    return Frac5_19[subjectiveCase](frac20Base[index]);
 		    }
 
-		    var my = SpecialCaseFor14.Select(content => content.Index).Contains(index)
-			    ? SpecialCaseFor14
+		    return SpecialCaseFor1_4.Select(content => content.Index).Contains(index)
+			    ? SpecialCaseFor1_4
 				    .Where(content => content.Index == index)
 				    .Where(content => content.Kind == kind || content.Kind == Kind.None)
 				    .Where(content => content.SubjCase == subjectiveCase)
 				    .Select(content => content.StrValue)
 				    .FirstOrDefault()
-			    : frac20[index];
-
-		    return my.AddSpace();
-
+			    : frac20Base[index];
 	    }
     }
 }
